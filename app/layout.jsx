@@ -1,21 +1,32 @@
 import { preload } from "react-dom";
 import { ContactProvider } from "@/components/ContactProvider";
 import { site } from "@/data/site";
+import { jsonLd, organizationSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import "./globals.css";
 
-const ogImage = {
-  url: "/media/og-image.png",
-  width: 1200,
-  height: 630,
-  alt: `${site.title} · AI venture studio, India`,
+const verification = {
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+  ...(process.env.BING_SITE_VERIFICATION ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } } : {}),
 };
+
+// Site-wide defaults. Canonical and og:url are left to each page, so routes
+// without their own (e.g. the 404) don't claim to be the home page.
+const defaults = pageMetadata({ absoluteTitle: site.title, description: site.metaDescription, path: "/" });
+delete defaults.alternates;
+delete defaults.openGraph.url;
 
 export const metadata = {
   metadataBase: new URL(site.url),
-  title: site.title,
-  description: site.description,
+  ...defaults,
+  // Inner pages pass a short title; the template adds the brand.
+  title: { default: site.title, template: `%s | ${site.name}` },
   applicationName: site.name,
-  alternates: { canonical: "/" },
+  keywords: site.keywords,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  category: "business",
+  formatDetection: { telephone: false, address: false, email: false },
   robots: {
     index: true,
     follow: true,
@@ -27,21 +38,6 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
-  openGraph: {
-    type: "website",
-    url: "/",
-    siteName: site.name,
-    locale: "en_US",
-    title: site.title,
-    description: site.description,
-    images: [ogImage],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.title,
-    description: site.description,
-    images: [ogImage],
-  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "48x48" },
@@ -49,6 +45,7 @@ export const metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
+  ...(Object.keys(verification).length ? { verification } : {}),
 };
 
 export const viewport = {
@@ -56,47 +53,21 @@ export const viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: "#0b0d10",
-};
-
-const organization = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${site.url}/#organization`,
-      name: site.name,
-      legalName: site.legalName,
-      url: `${site.url}/`,
-      description: site.description,
-      email: site.contactEmail,
-      logo: `${site.url}${site.logo}`,
-      sameAs: site.socials.map((social) => social.href),
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${site.url}/#website`,
-      name: site.name,
-      url: `${site.url}/`,
-      inLanguage: "en",
-      publisher: { "@id": `${site.url}/#organization` },
-    },
-  ],
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }) {
-  // The lunar environment is the first thing the hero paints.
-  preload("/media/environments/lunar.webp", { as: "image", fetchPriority: "high" });
+  // Body copy is set in Manrope; fetch the Latin subset with the HTML so text
+  // (the LCP element on most pages) renders in the right face immediately.
+  preload("/fonts/manrope-latin-variable.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
 
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang={site.language} data-scroll-behavior="smooth">
       <head>
         <link rel="describedby" href="/llms.txt" type="text/plain" />
       </head>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd({ "@graph": [organizationSchema(), websiteSchema()] })} />
         <ContactProvider email={site.contactEmail}>{children}</ContactProvider>
       </body>
     </html>

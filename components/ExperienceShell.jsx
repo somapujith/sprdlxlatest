@@ -846,7 +846,6 @@ export function ExperienceShell({ children, contactEmail }) {
                   className="object-label"
                   href={`/work/${project.id}/`}
                   data-project={project.id}
-                  aria-label={`View ${project.title}`}
                   aria-description="Drag to swing this meteor around its path and spin it. Arrow keys turn and shift it. Enter opens the venture."
                   onKeyDown={(event) => {
                     const step = LABEL_KEYS[event.key];

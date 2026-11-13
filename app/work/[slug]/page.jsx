@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/Icon";
 import { ProjectMark, ProjectStatus } from "@/components/ProjectBits";
 import { getProject, hostnameOf, projects } from "@/data/projects";
-import { site } from "@/data/site";
+import { absoluteUrl, site } from "@/data/site";
+import { ids, jsonLd, pageMetadata, snippet, ventureSchema } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -12,40 +13,28 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.id }));
 }
 
+/** Summary plus the longest portfolio context that still fits a search snippet. */
+function ventureDescription(project) {
+  const summary = project.summary.trim();
+  const context = [
+    ` ${project.title} is part of the ${site.name} portfolio, an AI venture studio in India.`,
+    ` ${project.title} is part of the ${site.name} venture portfolio.`,
+    ` Part of the ${site.name} portfolio.`,
+  ];
+  const fit = context.find((tail) => (summary + tail).length <= 160);
+  return fit ? summary + fit : snippet(summary);
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-
-  const title = `${project.title} — ${site.name}`;
-  const path = `/work/${project.id}/`;
-  const image = {
-    url: "/media/og-image.png",
-    width: 1200,
-    height: 630,
-    alt: `${project.title}, from the ${site.name} portfolio`,
-  };
-
-  return {
-    title,
-    description: project.summary,
-    alternates: { canonical: path },
-    openGraph: {
-      type: "website",
-      url: path,
-      siteName: site.name,
-      locale: "en_US",
-      title,
-      description: project.summary,
-      images: [image],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: project.summary,
-      images: [image],
-    },
-  };
+  return pageMetadata({
+    title: `${project.title} — ${project.category}`,
+    description: ventureDescription(project),
+    path: `/work/${project.id}/`,
+    type: "article",
+  });
 }
 
 function StudioLogo() {
@@ -64,35 +53,29 @@ export default async function CaseStudyPage({ params }) {
   const index = projects.findIndex((item) => item.id === project.id);
   const number = pad(index + 1);
   const next = projects[(index + 1) % projects.length];
-  const pageUrl = `${site.url}/work/${project.id}/`;
+  const pageUrl = absoluteUrl(`/work/${project.id}/`);
 
   const structuredData = {
-    "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebPage",
         "@id": `${pageUrl}#page`,
         url: pageUrl,
-        name: project.title,
-        description: project.summary,
-        inLanguage: "en",
-        isPartOf: { "@id": `${site.url}/#website` },
+        name: `${project.title} — ${project.category} | ${site.name}`,
+        description: ventureDescription(project),
+        inLanguage: site.language,
+        isPartOf: { "@id": ids.website },
+        publisher: { "@id": ids.organization },
         breadcrumb: { "@id": `${pageUrl}#breadcrumbs` },
-        mainEntity: {
-          "@type": "CreativeWork",
-          "@id": `${pageUrl}#project`,
-          name: project.title,
-          description: project.description,
-          url: pageUrl,
-          creator: { "@id": `${site.url}/#organization` },
-          ...(project.url ? { sameAs: project.url } : {}),
-        },
+        mainEntity: { "@id": `${pageUrl}#venture` },
+        primaryImageOfPage: project.logo ? { "@type": "ImageObject", url: absoluteUrl(project.logo) } : undefined,
       },
+      ventureSchema(project),
       {
         "@type": "BreadcrumbList",
         "@id": `${pageUrl}#breadcrumbs`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: site.name, item: `${site.url}/` },
+          { "@type": "ListItem", position: 1, name: site.name, item: absoluteUrl("/") },
           { "@type": "ListItem", position: 2, name: project.title, item: pageUrl },
         ],
       },
@@ -103,7 +86,7 @@ export default async function CaseStudyPage({ params }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={jsonLd(structuredData)}
       />
       <a className="skip-link" href="#case-study">
         Skip to the venture

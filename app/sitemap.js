@@ -1,14 +1,25 @@
 import { projects } from "@/data/projects";
-import { site } from "@/data/site";
+import { absoluteUrl, site } from "@/data/site";
+
+// Generated at build time, so lastModified reflects the latest deploy.
+const lastModified = new Date();
 
 export default function sitemap() {
   return [
-    { url: `${site.url}/`, changeFrequency: "monthly", priority: 1 },
+    {
+      url: absoluteUrl("/"),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 1,
+      images: [absoluteUrl(site.ogImage.url), ...projects.filter((p) => p.logo).map((p) => absoluteUrl(p.logo))],
+    },
     ...projects.map((project) => ({
-      url: `${site.url}/work/${project.id}/`,
+      url: absoluteUrl(`/work/${project.id}/`),
+      lastModified,
       changeFrequency: "monthly",
       priority: 0.8,
+      ...(project.logo ? { images: [absoluteUrl(project.logo)] } : {}),
     })),
-    { url: `${site.url}/privacy/`, changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/privacy/"), lastModified, changeFrequency: "yearly", priority: 0.3 },
   ];
 }

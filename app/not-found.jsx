@@ -2,7 +2,7 @@ import { Icon } from "@/components/Icon";
 import { site } from "@/data/site";
 
 export const metadata = {
-  title: `Lost in space — ${site.name}`,
+  title: "Page not found",
   robots: { index: false, follow: true },
 };
 

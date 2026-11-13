@@ -848,7 +848,7 @@ img {
 }
 
 .discipline-number {
-    color: #707a7a;
+    color: #58625f;
     font-size: 12px
 }
 
@@ -859,14 +859,14 @@ img {
 }
 
 .studio-disciplines p {
-    color: #626d70;
+    color: #545f62;
     max-width: 290px;
     font-size: 15px;
     line-height: 1.6
 }
 
 .studio-signature {
-    color: #687271;
+    color: #57615f;
     border-top: 1px solid #c4c9c5;
     justify-content: space-between;
     margin-top: 80px;

@@ -5,6 +5,8 @@
 // Visual fields
 //   accent  – UI accent (list rows, dialog, case study)
 //   light   – colour the meteor glows with in the scene
+//   schemaType – schema.org type for SEO: Organization (default),
+//             SoftwareApplication or VideoGame
 //   meteor  – procedural meteor: `seed` shapes it, `accent` tints its veins and
 //             crystals, `scale` stretches it on x/y/z
 //   logo    – optional transparent PNG drawn on the meteor face, taken from the
@@ -72,6 +74,7 @@ export const projects = [
   },
   {
     id: "lipi",
+    schemaType: "SoftwareApplication",
     title: "Lipi",
     category: "AI Extension",
     status: "Active",
@@ -89,6 +92,7 @@ export const projects = [
   },
   {
     id: "meter-mama",
+    schemaType: "VideoGame",
     title: "Meter Mama",
     category: "Browser Game",
     status: "Active",

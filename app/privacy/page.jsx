@@ -1,37 +1,14 @@
 import { Icon } from "@/components/Icon";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-const title = `Privacy policy — ${site.name}`;
-const description = `What ${site.name} does with messages sent via the contact form, what our host logs, and what you can ask of us.`;
-const image = {
-  url: "/media/og-image.png",
-  width: 1200,
-  height: 630,
-  alt: `${site.title} · AI venture studio, India`,
-};
+export const metadata = pageMetadata({
+  title: "Privacy Policy",
+  description: `How ${site.name} handles contact-form messages, hosting logs and your data rights — no tracking cookies, no ads, and nothing sold.`,
+  path: "/privacy/",
+});
 
-export const metadata = {
-  title,
-  description,
-  alternates: { canonical: "/privacy/" },
-  openGraph: {
-    type: "website",
-    url: "/privacy/",
-    siteName: site.name,
-    locale: "en_US",
-    title,
-    description,
-    images: [image],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [image],
-  },
-};
-
-const domain = new URL(site.url).hostname;
+const domain = new URL(site.url).hostname.replace(/^www\./, "");
 
 function StudioLogo() {
   return (

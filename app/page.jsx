@@ -2,7 +2,9 @@ import { ExperienceShell } from "@/components/ExperienceShell";
 import { Icon } from "@/components/Icon";
 import { ProjectMark, ProjectStatus } from "@/components/ProjectBits";
 import { projects } from "@/data/projects";
-import { site } from "@/data/site";
+import { preload } from "react-dom";
+import { absoluteUrl, site } from "@/data/site";
+import { ids, jsonLd, pageMetadata, ventureSchema } from "@/lib/seo";
 
 const pad = (value) => String(value).padStart(2, "0");
 
@@ -66,26 +68,34 @@ const approach = [
   },
 ];
 
+export const metadata = pageMetadata({ absoluteTitle: site.title, description: site.metaDescription, path: "/" });
+
 const portfolio = {
-  "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": `${site.url}/#portfolio`,
-  url: `${site.url}/`,
+  "@id": absoluteUrl("/#portfolio"),
+  url: absoluteUrl("/"),
   name: site.title,
-  description: site.description,
-  isPartOf: { "@id": `${site.url}/#website` },
+  description: site.metaDescription,
+  inLanguage: site.language,
+  isPartOf: { "@id": ids.website },
+  about: { "@id": ids.organization },
+  primaryImageOfPage: { "@type": "ImageObject", url: absoluteUrl(site.ogImage.url), width: site.ogImage.width, height: site.ogImage.height },
   mainEntity: {
     "@type": "ItemList",
+    name: `${site.name} ventures`,
+    numberOfItems: projects.length,
     itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: project.title,
-      url: `${site.url}/work/${project.id}/`,
+      url: absoluteUrl(`/work/${project.id}/`),
+      item: ventureSchema(project),
     })),
   },
 };
 
 export default function HomePage() {
+  // The lunar backdrop is the first thing the hero paints.
+  preload("/media/environments/lunar.webp", { as: "image", fetchPriority: "high" });
   const total = pad(projects.length);
   const year = new Date().getFullYear();
 
@@ -93,7 +103,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolio).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={jsonLd(portfolio)}
       />
       <ExperienceShell contactEmail={site.contactEmail}>
         <div className="editorial-content">
