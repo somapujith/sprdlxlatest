@@ -7,7 +7,7 @@ const ogImage = {
   url: "/media/og-image.png",
   width: 1200,
   height: 630,
-  alt: `${site.title}. An AI venture studio.`,
+  alt: `${site.title} · AI venture studio, India`,
 };
 
 export const metadata = {

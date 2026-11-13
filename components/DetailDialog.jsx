@@ -85,7 +85,7 @@ export function DetailDialog({ project, index, close, next, rotate, interactive,
       {interactive && (
         <button
           className="detail-art-interaction"
-          aria-label={`Rotate the ${project?.title ?? "project"} object. Drag or use arrow keys.`}
+          aria-label={`Spin the ${project?.title ?? "venture"} meteor by dragging or with the arrow keys.`}
           onPointerDown={(event) => {
             if (event.button !== 0 || dragRef.current) return;
             dragRef.current = {
@@ -141,16 +141,16 @@ export function DetailDialog({ project, index, close, next, rotate, interactive,
       <div className="detail-art-caption" aria-hidden="true">
         {pad(index + 1)} / {project?.title}
         <span>
-          {interactive ? "DRAG TO ROTATE · " : ""}A SPRDLX VENTURE
+          {interactive ? "DRAG TO SPIN · " : ""}SPRDLX PORTFOLIO
         </span>
       </div>
 
       <div className="detail-panel" ref={panelRef}>
         <div className="detail-toolbar">
           <a href={project ? `/work/${project.id}/` : "#"}>
-            Project page <Icon />
+            Full story <Icon />
           </a>
-          <button ref={closeButtonRef} className="close-button" onClick={close} aria-label="Close project detail">
+          <button ref={closeButtonRef} className="close-button" onClick={close} aria-label="Close venture preview">
             Close <Icon name="close" />
           </button>
         </div>
@@ -170,7 +170,7 @@ export function DetailDialog({ project, index, close, next, rotate, interactive,
             <p className="preview-summary">{project.summary}</p>
             <div className="preview-status">
               <ProjectStatus status={project.status} />
-              {project.status === "In development" ? " · Not yet launched" : ""}
+              {project.status === "In development" ? " · Pre-launch" : ""}
             </div>
             <a
               className="button preview-visit"
@@ -178,7 +178,7 @@ export function DetailDialog({ project, index, close, next, rotate, interactive,
               target={project.url ? "_blank" : undefined}
               rel={project.url ? "noopener noreferrer" : undefined}
             >
-              {project.url ? `Visit ${hostnameOf(project.url)}` : "View project"}
+              {project.url ? `Visit ${hostnameOf(project.url)}` : "View venture"}
               <Icon />
             </a>
           </article>
@@ -186,10 +186,10 @@ export function DetailDialog({ project, index, close, next, rotate, interactive,
 
         <div className="detail-bottom">
           <button className="text-link" onClick={close}>
-            <Icon name="arrow-left" /> Back to work
+            <Icon name="arrow-left" /> All ventures
           </button>
           <button className="text-link" onClick={next}>
-            Next project <Icon name="arrow-right" />
+            Next venture <Icon name="arrow-right" />
           </button>
         </div>
       </div>

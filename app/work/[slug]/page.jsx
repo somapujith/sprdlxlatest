@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
     url: "/media/og-image.png",
     width: 1200,
     height: 630,
-    alt: `${project.title} — a venture by ${site.name}`,
+    alt: `${project.title}, from the ${site.name} portfolio`,
   };
 
   return {
@@ -106,14 +106,14 @@ export default async function CaseStudyPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
       />
       <a className="skip-link" href="#case-study">
-        Skip to project
+        Skip to the venture
       </a>
       <header className="detail-header">
         <div className="header-brand">
           <StudioLogo />
         </div>
         <a className="text-link" href="/#projects">
-          <Icon name="arrow-left" /> All projects
+          <Icon name="arrow-left" /> All ventures
         </a>
       </header>
 
@@ -122,7 +122,7 @@ export default async function CaseStudyPage({ params }) {
           <div className="case-hero">
             <div className="case-introduction">
               <div className="eyebrow case-kicker">
-                <span>{number} / SELECTED PROJECT</span>
+                <span>{number} / VENTURE FILE</span>
                 <ProjectStatus status={project.status} />
               </div>
               <h1 id="project-title">{project.title}</h1>
@@ -149,7 +149,7 @@ export default async function CaseStudyPage({ params }) {
 
           <dl className="case-facts">
             <div>
-              <dt>Focus</dt>
+              <dt>Sector</dt>
               <dd>{project.category}</dd>
             </div>
             <div>
@@ -159,31 +159,31 @@ export default async function CaseStudyPage({ params }) {
               </dd>
             </div>
             <div>
-              <dt>Studio</dt>
+              <dt>Built by</dt>
               <dd>{site.name}</dd>
             </div>
           </dl>
 
           <div className="case-chapters">
             <section className="case-chapter">
-              <span className="case-chapter-number">01 / THE CONTEXT</span>
-              <h2>The opportunity</h2>
+              <span className="case-chapter-number">01 / THE GAP</span>
+              <h2>Why it exists</h2>
               <p>{project.challenge}</p>
             </section>
             <section className="case-chapter">
-              <span className="case-chapter-number">02 / THE RESPONSE</span>
-              <h2>What we built</h2>
+              <span className="case-chapter-number">02 / THE BUILD</span>
+              <h2>What it does</h2>
               <p>{project.built}</p>
             </section>
           </div>
         </article>
 
         <a className="text-link standalone-back" href="/#projects">
-          <Icon name="arrow-left" /> Back to work
+          <Icon name="arrow-left" /> Back to the portfolio
         </a>
         <a className="case-next" href={`/work/${next.id}/`} style={{ "--project-accent": next.accent }}>
           <span className="case-next-copy">
-            <span className="eyebrow">NEXT IN THE COLLECTION</span>
+            <span className="eyebrow">NEXT VENTURE</span>
             <span className="case-next-title">{next.title}</span>
           </span>
           <ProjectMark project={next} />
@@ -193,9 +193,9 @@ export default async function CaseStudyPage({ params }) {
 
       <footer className="case-footer">
         <StudioLogo />
-        <span>Have something in mind?</span>
+        <span>Building something?</span>
         <a className="inline-icon-link" data-contact="true" href={`mailto:${site.contactEmail}`} aria-haspopup="dialog">
-          Let’s talk <Icon />
+          Pitch us <Icon />
         </a>
         <div className="footer-legal">
           <a href="/privacy/">Privacy policy</a>

@@ -9,7 +9,7 @@ const ContactForm = dynamic(() => import("@/components/ContactForm"), {
   ssr: false,
   loading: () => (
     <p className="contact-loading" role="status">
-      Preparing your message…
+      Loading the form…
     </p>
   ),
 });
@@ -84,14 +84,14 @@ export function ContactProvider({ children, email, preview = false }) {
             className="contact-close"
             type="button"
             onClick={close}
-            aria-label="Close contact form"
+            aria-label="Close the form"
           >
             <Icon name="close" />
           </button>
-          <p className="eyebrow">START A CONVERSATION</p>
+          <p className="eyebrow">PITCH SPRDLX</p>
           <h2 id="contact-dialog-title">
-            Tell us what
-            <br className="contact-title-break" /> you’re building.
+            What’s the
+            <br className="contact-title-break" /> big idea?
           </h2>
           {requested && <ContactForm email={email} preview={preview} open={open} close={close} />}
         </div>

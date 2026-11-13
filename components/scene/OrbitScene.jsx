@@ -22,7 +22,6 @@ import {
   Vector3,
 } from "three";
 import { projects } from "@/data/projects";
-import { site } from "@/data/site";
 import {
   canActivate,
   dragTarget,
@@ -203,7 +202,8 @@ export function OrbitScene({ runtime, onReady, onError, onSelect, exploreTouch, 
   const scratch = useMemo(() => ({ projected: new Vector3(), corner: new Vector3(), lookTarget: new Vector3() }), []);
   const lightAxis = useMemo(() => createLightAxis(stationT(LAST)), []);
   const rig = lightAxis.root;
-  const earth = useMemo(() => createEarth(site.cities), []);
+  // No city markers on the globe — just Earth, its atmosphere and the impact pulse.
+  const earth = useMemo(() => createEarth([]), []);
   const framing = useMemo(() => earthFraming(size.width, size.height, EARTH_RADIUS), [size.width, size.height]);
   const space = useMemo(createLivingSpace, []);
   const flightStart = useMemo(() => new Vector3(), []);

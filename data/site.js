@@ -3,9 +3,9 @@ export const site = {
   name: "SPRDLX",
   legalName: "Super Deluxe Studios", // TODO: confirm the registered legal entity for the privacy policy
   url: "https://sprdlx.co",
-  title: "SPRDLX — We build ideas into companies",
+  title: "SPRDLX — From spark to company",
   description:
-    "SPRDLX is an AI venture studio building and backing category-defining companies — including Volery, Anthill Ventures, Esthetic Insights, Pulp, Sunday Everyday, Lipi and Meter Mama.",
+    "SPRDLX is an AI venture studio in India that turns early sparks into companies and backs them. The portfolio: Volery, Anthill Ventures, Esthetic Insights, Lipi, Meter Mama, Pulp and Sunday Everyday.",
   contactEmail: "hello@sprdlx.co", // TODO: replace with the studio inbox
   logo: "/media/sprdlx-logo.svg",
   socials: [
@@ -22,32 +22,3 @@ export const site = {
     { name: "Singapore", latitude: 1.3521, longitude: 103.8198, reveal: 0.8, label: [12, 8] },
   ],
 };
-
-export const team = [
-  // TODO: replace both placeholder founders with real names, roles, bios and
-  // portraits (drop 768px-wide images into /public/media/team and set `portrait`).
-  {
-    id: "founder-one",
-    name: "Founder Name",
-    role: "Co-founder · Ventures & Strategy",
-    expertise: ["Venture building", "Brand strategy", "Go-to-market"],
-    biography: [
-      "Leads the venture side of the studio — finding the opportunity, shaping the company around it and assembling the people who can take it to market.",
-      "Works across consumer brands and AI products, from the first naming exercise to launch and the growth that follows.",
-    ],
-    links: [{ label: "LinkedIn", href: "https://www.linkedin.com/company/super-deluxe-studios/" }],
-    portrait: null,
-  },
-  {
-    id: "founder-two",
-    name: "Founder Name",
-    role: "Co-founder · Technology & AI",
-    expertise: ["Product engineering", "Applied AI", "Systems design"],
-    biography: [
-      "Leads technology across the portfolio — product architecture, AI systems and the infrastructure that lets small teams ship like large ones.",
-      "Turns early prototypes into products made for real use, then keeps improving them with every release.",
-    ],
-    links: [{ label: "LinkedIn", href: "https://www.linkedin.com/company/super-deluxe-studios/" }],
-    portrait: null,
-  },
-];

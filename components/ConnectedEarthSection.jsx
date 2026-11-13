@@ -8,31 +8,31 @@ export function ConnectedEarthSection() {
       <div className={styles.layout}>
         <div className={styles.introduction}>
           <p className={styles.eyebrow}>
-            <span aria-hidden="true"></span>A global outlook
+            <span aria-hidden="true"></span>From India, outward
           </p>
           <h2 id="connected-earth-heading">
-            Built here.
+            Rooted in India.
             <br />
-            <span>Connected everywhere.</span>
+            <span>Built to travel.</span>
           </h2>
-          <ol className={styles.connections} aria-label="Illustrative international connections">
+          <ol className={styles.connections} aria-label="Example cities on the network">
             {site.cities.map((city) => (
               <li key={city.name}>{city.name}</li>
             ))}
           </ol>
-          <p className={styles.credit}>Earth imagery · NASA / GSFC</p>
+          <p className={styles.credit}>Earth imagery courtesy of NASA / GSFC</p>
         </div>
         <div className={styles.invitation}>
           <p>
-            We bring AI, design and venture building together to help companies grow beyond borders. Have an
-            idea? Let’s build what comes next.
+            AI, brand and venture building in one place, aimed at markets well beyond home. Got something
+            brewing? Bring it to us.
           </p>
           <div className={styles.actions}>
             <a className={styles.primary} data-contact="true" href={`mailto:${site.contactEmail}`} aria-haspopup="dialog">
-              Build with us <Icon />
+              Pitch your idea <Icon />
             </a>
             <a className={styles.secondary} href="#projects">
-              Explore our projects <Icon name="arrow-right" />
+              See the ventures <Icon name="arrow-right" />
             </a>
           </div>
         </div>

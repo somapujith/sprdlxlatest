@@ -3,21 +3,21 @@ import { ExperienceShell } from "@/components/ExperienceShell";
 import { Icon } from "@/components/Icon";
 import { ProjectMark, ProjectStatus } from "@/components/ProjectBits";
 import { projects } from "@/data/projects";
-import { site, team } from "@/data/site";
+import { site } from "@/data/site";
 
 const pad = (value) => String(value).padStart(2, "0");
 
 const disciplines = [
-  { title: "Ventures", text: "The opportunity, the market, the founding team." },
-  { title: "Design", text: "A clear identity. An intuitive experience." },
-  { title: "Technology & AI", text: "Products and AI systems made for real use." },
+  { title: "Venture", text: "The thesis, the market, the people to run it." },
+  { title: "Brand", text: "A name, a look and a voice that sticks." },
+  { title: "AI & Product", text: "Software that ships, gets used and gets better." },
 ];
 
 const approach = [
   {
-    label: "Discover",
-    title: "Find the problem worth solving.",
-    text: "Start with people, markets and data before deciding what to build.",
+    label: "Spot",
+    title: "Hunt down the sharp problem.",
+    text: "Users, numbers and the market come first. The product comes after.",
     diagram: (
       <svg className="approach-diagram" viewBox="0 0 280 120" fill="none" aria-hidden="true" focusable="false">
         <path d="M25 25 140 60 25 95M65 12 140 60 65 108M15 60h225" className="diagram-line"></path>
@@ -34,9 +34,9 @@ const approach = [
     ),
   },
   {
-    label: "Build",
-    title: "Make the complex feel simple.",
-    text: "Give every venture a clear purpose, a considered identity and AI that quietly does the heavy lifting.",
+    label: "Ship",
+    title: "Build lean. Launch early.",
+    text: "One clear job per venture, a brand with nerve, and AI wired in wherever it saves real work.",
     diagram: (
       <svg className="approach-diagram" viewBox="0 0 280 120" fill="none" aria-hidden="true" focusable="false">
         <rect x="35" y="22" width="48" height="38" rx="4" className="diagram-ring"></rect>
@@ -50,8 +50,8 @@ const approach = [
   },
   {
     label: "Scale",
-    title: "Keep compounding.",
-    text: "Learn from real use, back what works and give good companies room to grow.",
+    title: "Double down on what works.",
+    text: "Real usage shows where to push. Capital and time follow the ventures that earn them.",
     diagram: (
       <svg className="approach-diagram" viewBox="0 0 280 120" fill="none" aria-hidden="true" focusable="false">
         <path
@@ -66,71 +66,6 @@ const approach = [
     ),
   },
 ];
-
-function initialsOf(name) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
-function Founder({ member }) {
-  const nameId = `${member.id}-name`;
-  return (
-    <article className="founder" id={member.id} aria-labelledby={nameId}>
-      {member.portrait ? (
-        <div className="founder-portrait">
-          <img
-            src={member.portrait}
-            width="768"
-            height="576"
-            alt={`Portrait of ${member.name}`}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      ) : (
-        <div className="founder-portrait is-placeholder">
-          <span className="founder-initials" aria-hidden="true">
-            {initialsOf(member.name)}
-          </span>
-        </div>
-      )}
-      <div className="founder-heading">
-        <h4 id={nameId}>{member.name}</h4>
-        <p>{member.role}</p>
-      </div>
-      <ul className="founder-expertise" aria-label={`${member.name}’s expertise`}>
-        {member.expertise.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-      <div className="founder-biography">
-        {member.biography.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </div>
-      {member.links?.length ? (
-        <div className="founder-links">
-          {member.links.map((link) => (
-            <a
-              key={link.href + link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${member.name} on ${link.label} (opens in a new tab)`}
-            >
-              {link.label} <Icon />
-            </a>
-          ))}
-        </div>
-      ) : null}
-    </article>
-  );
-}
 
 const portfolio = {
   "@context": "https://schema.org",
@@ -167,17 +102,17 @@ export default function HomePage() {
 
           <section id="projects" className="work-index section-space" aria-labelledby="work-heading">
             <div className="section-topline">
-              <span className="eyebrow">A CONSTELLATION OF IDEAS</span>
+              <span className="eyebrow">THE PORTFOLIO</span>
               <span className="eyebrow">01 — {total}</span>
             </div>
             <div className="section-heading">
               <h2 id="work-heading" tabIndex={-1}>
-                Built with intention.
+                Ventures in motion.
               </h2>
               <p>
-                AI products, intelligence platforms,
+                Software for investors, AI for everyone,
                 <br />
-                and brands with a point of view.
+                and consumer brands with nerve.
               </p>
             </div>
             <div className="project-list">
@@ -208,22 +143,22 @@ export default function HomePage() {
 
           <section id="studio" className="studio-section section-space" aria-labelledby="studio-heading">
             <div className="section-topline">
-              <span className="eyebrow">SPRDLX / THE STUDIO</span>
+              <span className="eyebrow">INSIDE SPRDLX</span>
               <span className="eyebrow">02</span>
             </div>
             <div className="studio-introduction">
               <h2 id="studio-heading">
-                From possibility
+                Sparks are cheap.
                 <br />
-                to a working company.
+                Companies take work.
               </h2>
               <div className="studio-summary">
                 <p>
-                  We build ideas into AI products, brands and independent companies, then back the ones worth
-                  scaling. Strategy, design, technology and capital come together in one studio.
+                  We take early ideas and turn them into AI products, consumer brands and standalone companies, then
+                  put money behind the ones that earn it. Venture, brand, engineering and capital under one roof.
                 </p>
-                <a className="text-link" href="#team-heading">
-                  Meet the co-founders <Icon />
+                <a className="text-link" href="#projects">
+                  See the portfolio <Icon />
                 </a>
               </div>
             </div>
@@ -237,47 +172,25 @@ export default function HomePage() {
               ))}
             </div>
             <div className="studio-signature">
-              <span>Independent companies. Shared foundations.</span>
-              <span>{total} ventures. One studio.</span>
+              <span>Every company stands alone. None starts alone.</span>
+              <span>{total} ventures and counting.</span>
             </div>
-
-            <section className="team-section" aria-labelledby="team-heading">
-              <div className="team-introduction">
-                <div>
-                  <p className="eyebrow">THE PEOPLE BEHIND SPRDLX</p>
-                  <h3 id="team-heading">
-                    Different expertise.
-                    <br />
-                    Shared ambition.
-                  </h3>
-                </div>
-                <p>
-                  Venture building and brand strategy meet product engineering and applied AI. We bring both
-                  perspectives to every company we build.
-                </p>
-              </div>
-              <div className="team-grid">
-                {team.map((member) => (
-                  <Founder key={member.id} member={member} />
-                ))}
-              </div>
-            </section>
           </section>
 
           <section id="about" className="about-section section-space" aria-labelledby="about-heading">
             <div className="section-topline">
-              <span className="eyebrow">OUR APPROACH</span>
+              <span className="eyebrow">HOW WE BUILD</span>
               <span className="eyebrow">03</span>
             </div>
             <div className="about-layout">
               <h2 id="about-heading">
-                Different ideas.
+                Any category.
                 <br />
-                <span>The same care.</span>
+                <span>One playbook.</span>
               </h2>
               <p className="about-lead">
-                From intelligence platforms and AI tools to skincare brands, we work across categories. Each
-                venture starts with a specific need and its own point of view.
+                Fund software, an AI writing tool, a pixel-art game, vegan skincare. The categories change. The
+                discipline doesn’t: every venture starts from one sharp, specific need.
               </p>
             </div>
             <div className="approach-steps">
@@ -297,22 +210,22 @@ export default function HomePage() {
 
           <footer id="contact" className="contact-section section-space" aria-labelledby="contact-heading">
             <div className="section-topline">
-              <span className="eyebrow">START A CONVERSATION</span>
+              <span className="eyebrow">GOT A SPARK?</span>
               <span className="eyebrow">04</span>
             </div>
             <div className="contact-invitation">
               <h2 id="contact-heading">
-                Let’s build
+                Bring the idea.
                 <br />
-                <span>what comes next.</span>
+                <span>Let’s make it real.</span>
               </h2>
               <div className="contact-note">
                 <p>
-                  A new venture, an AI product or an idea
+                  Half a deck, a rough prototype
                   <br />
-                  you can’t stop thinking about.
+                  or a hunch that won’t go away.
                 </p>
-                <p>We’d like to hear it.</p>
+                <p>Send it our way.</p>
               </div>
             </div>
             <a className="contact-email" data-contact="true" href={`mailto:${site.contactEmail}`} aria-haspopup="dialog">

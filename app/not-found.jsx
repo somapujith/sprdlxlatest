@@ -2,7 +2,7 @@ import { Icon } from "@/components/Icon";
 import { site } from "@/data/site";
 
 export const metadata = {
-  title: `Page not found — ${site.name}`,
+  title: `Lost in space — ${site.name}`,
   robots: { index: false, follow: true },
 };
 
@@ -10,14 +10,14 @@ export default function NotFound() {
   return (
     <main className="not-found">
       <a className="wordmark" href="/">
-        sprdlx
+        super
         <br />
-        studio.
+        deluxe.
       </a>
-      <p className="eyebrow">404 / OUT OF ORBIT</p>
-      <h1>Let’s find your way back.</h1>
+      <p className="eyebrow">404 / SIGNAL LOST</p>
+      <h1>This page drifted off.</h1>
       <a className="button" href="/#projects">
-        Explore our work <Icon />
+        Back to the ventures <Icon />
       </a>
       <div className="footer-legal">
         <a href="/privacy/">Privacy policy</a>

@@ -93,20 +93,20 @@ export function SceneControls({
   }, [exploring, onExplore, popoverOpen, fallbackOpen]);
 
   return (
-    <div className="scene-toolbar" role="group" aria-label="Portfolio controls">
+    <div className="scene-toolbar" role="group" aria-label="Scene controls">
       {!staticView && (
         <button
           ref={rotateButtonRef}
           className="scene-tool rotate-tool"
           type="button"
-          aria-label={exploring ? "Done rotating — return to scrolling" : "Rotate objects"}
+          aria-label={exploring ? "Stop spinning and scroll again" : "Spin the meteors"}
           aria-pressed={exploring}
           aria-describedby="scene-guidance"
           disabled={!ready}
           onClick={() => onExplore(!exploring)}
         >
           <Icon name={exploring ? "check" : "rotate"} />
-          <span>{exploring ? "Done" : "Rotate"}</span>
+          <span>{exploring ? "Done" : "Spin"}</span>
         </button>
       )}
 
@@ -119,7 +119,7 @@ export function SceneControls({
         }}
       >
         <Icon name="list" />
-        <span>Projects</span>
+        <span>Ventures</span>
       </a>
 
       {!failed && (
@@ -128,10 +128,10 @@ export function SceneControls({
           className="scene-tool options-tool"
           type="button"
           popoverTarget="scene-options"
-          aria-label="Scene settings"
+          aria-label="Display options"
           aria-expanded={popoverOpen || fallbackOpen}
           aria-controls="scene-options"
-          title="Scene settings"
+          title="Display options"
           onClick={() => {
             if (optionsRef.current?.showPopover) return; // handled by popoverTarget
             positionOptions();
@@ -154,11 +154,11 @@ export function SceneControls({
         }}
         onToggle={(event) => setPopoverOpen(event.newState === "open")}
         role="group"
-        aria-label="Scene settings"
+        aria-label="Display options"
       >
         <div className="scene-options-heading">
-          <span>Scene settings</span>
-          <button type="button" aria-label="Close settings" onClick={closeOptions}>
+          <span>Display options</span>
+          <button type="button" aria-label="Close options" onClick={closeOptions}>
             <Icon name="close" />
           </button>
         </div>
@@ -175,8 +175,8 @@ export function SceneControls({
             >
               <Icon name={paused || reduced ? "play" : "pause"} />
               <span>
-                Ambient motion
-                {reduced && <small>Reduced motion is enabled on your device</small>}
+                Background drift
+                {reduced && <small>Your device asks for less motion</small>}
               </span>
               <span className="option-switch" aria-hidden="true" />
             </button>
@@ -190,7 +190,7 @@ export function SceneControls({
               }}
             >
               <Icon name="reset" />
-              <span>Reset positions</span>
+              <span>Put meteors back</span>
             </button>
           </>
         )}
@@ -208,8 +208,8 @@ export function SceneControls({
         >
           <Icon name="view" />
           <span>
-            Static view
-            <small>Browse without the 3D scene</small>
+            Flat mode
+            <small>Skip the 3D, keep the content</small>
           </span>
           <span className="option-switch" aria-hidden="true" />
         </button>

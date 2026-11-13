@@ -1,12 +1,12 @@
 import { projects } from "@/data/projects";
-import { site, team } from "@/data/site";
+import { site } from "@/data/site";
 
 export const dynamic = "force-static";
 
 function buildLlmsTxt() {
   const inDevelopment = projects.filter((project) => project.status === "In development").map((p) => p.title);
   const developmentNote = inDevelopment.length
-    ? ` ${inDevelopment.join(" and ")} ${inDevelopment.length === 1 ? "is" : "are"} in development and not yet launched.`
+    ? ` ${inDevelopment.join(" and ")} ${inDevelopment.length === 1 ? "is" : "are"} still pre-launch.`
     : "";
 
   const lines = [
@@ -14,17 +14,14 @@ function buildLlmsTxt() {
     "",
     `> ${site.description}`,
     "",
-    `This is the studio portfolio of ${site.name}, an AI venture studio that builds and backs companies across AI, intelligence, infrastructure and consumer brands. Project pages describe individual ventures; they are not alternate identities of ${site.name}.${developmentNote} Use each venture's own website for its current details.`,
+    `${site.name} is an AI venture studio in India that builds and backs companies in venture software, AI tools, games and consumer skincare. Each page under /work/ covers one venture: a separate company or brand, not another name for ${site.name}.${developmentNote} For up-to-date facts, go to each venture's own website.`,
     "",
     "## Studio",
     "",
-    `- [Studio overview](${site.url}/#studio): Disciplines, co-founders and approach.`,
-    ...team.map(
-      (member) => `- [${member.name}](${site.url}/#${member.id}): ${member.role}. ${member.expertise.join(", ")}.`,
-    ),
-    `- [Contact](mailto:${site.contactEmail}): New ventures, partnerships and investment conversations.`,
+    `- [About the studio](${site.url}/#studio): What SPRDLX does and how it builds.`,
+    `- [Contact](mailto:${site.contactEmail}): Pitches, partnerships and investment.`,
     "",
-    "## Projects",
+    "## Ventures",
     "",
     ...projects.map(
       (project) =>
@@ -33,9 +30,9 @@ function buildLlmsTxt() {
     "",
     "## Optional",
     "",
-    `- [Visual portfolio](${site.url}/): Interactive gallery and links to the full project pages.`,
-    `- [Privacy policy](${site.url}/privacy/): How contact-form enquiries and hosting logs are handled.`,
-    `- [Sitemap](${site.url}/sitemap.xml): Canonical HTML pages.`,
+    `- [Home page](${site.url}/): 3D venture map, plus links to every venture page.`,
+    `- [Privacy policy](${site.url}/privacy/): What happens to contact-form messages and hosting logs.`,
+    `- [Sitemap](${site.url}/sitemap.xml): Every canonical page.`,
     "",
   ];
 

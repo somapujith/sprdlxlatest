@@ -25,7 +25,7 @@ const ENVIRONMENTS = ["lunar", "nebula", "sunrise"];
 const NAV_ITEMS = [
   ["work", "Work", "#projects"],
   ["studio", "Studio", "#studio"],
-  ["about", "Approach", "#about"],
+  ["about", "Method", "#about"],
   ["contact", "Contact", "#contact"],
 ];
 const LABEL_KEYS = {
@@ -661,17 +661,17 @@ export function ExperienceShell({ children, contactEmail }) {
     });
     runtime.finaleSpin = 0;
     runtime.earthRotation.x = runtime.earthRotation.y = 0;
-    setAnnouncement("Object orbits and rotations reset.");
+    setAnnouncement("Every meteor is back where it started.");
     runtime.invalidate();
   };
 
   const journeyLabel = inFinale
-    ? "04 / EARTH"
+    ? "04 / HOME PLANET"
     : chapter < 2
-      ? "01 / LUNAR"
+      ? "01 / MOONDUST"
       : chapter < 5
-        ? "02 / DEEP SPACE"
-        : "03 / FIRST LIGHT";
+        ? "02 / NEBULA"
+        : "03 / DAYBREAK";
 
   return (
     <div
@@ -681,7 +681,7 @@ export function ExperienceShell({ children, contactEmail }) {
       onClick={handleClick}
     >
       <a className="skip-link" href="#projects">
-        Skip to project index
+        Skip to the ventures
       </a>
       <PerfOverlay runtime={runtime} />
 
@@ -699,12 +699,12 @@ export function ExperienceShell({ children, contactEmail }) {
           ))}
         </nav>
         <a className="button contact-button" data-contact href={`mailto:${contactEmail}`} aria-haspopup="dialog">
-          Let’s talk <Icon />
+          Pitch us <Icon />
         </a>
       </header>
 
       <main>
-        <section id="top" className="experience-track" ref={trackRef} aria-label="Interactive portfolio">
+        <section id="top" className="experience-track" ref={trackRef} aria-label="3D venture map">
           <div
             className={`experience-stage${inFinale ? " is-earth" : ""}`}
             ref={(element) => {
@@ -795,14 +795,14 @@ export function ExperienceShell({ children, contactEmail }) {
                 aria-hidden={ready}
               >
                 <span className="scene-loader-ring" aria-hidden="true" />
-                <span>{ready ? "" : "Preparing the orbit"}</span>
+                <span>{ready ? "" : "Lighting up the sky"}</span>
               </div>
             )}
 
             <div className="scene-vignette" />
 
             <div className="journey-indicator" aria-hidden="true">
-              <span>THE ORBITAL COLLECTION</span>
+              <span>THE SPRDLX SKY</span>
               <div className="journey-rail">
                 <div
                   ref={(element) => {
@@ -821,22 +821,22 @@ export function ExperienceShell({ children, contactEmail }) {
             >
               <p className="eyebrow">AI VENTURE STUDIO</p>
               <h1>
-                We build ideas
+                From spark
                 <br />
-                into bold
+                to company,
                 <br />
-                <span>companies.</span>
+                <span>on repeat.</span>
               </h1>
               <p className="hero-description">
-                SPRDLX builds and backs category-defining companies — giving bold ideas a brand, a product and a path
-                to market.
+                An AI venture studio in India. We give early ideas a product, a brand and capital — then push them
+                into the market.
               </p>
               <a className="text-link hero-link" href="#projects">
-                Explore our work <Icon />
+                See the ventures <Icon />
               </a>
             </div>
 
-            <div className="object-labels" aria-label="Explore a project">
+            <div className="object-labels" aria-label="Open a venture">
               {projects.map((project, index) => (
                 <a
                   key={project.id}
@@ -846,8 +846,8 @@ export function ExperienceShell({ children, contactEmail }) {
                   className="object-label"
                   href={`/work/${project.id}/`}
                   data-project={project.id}
-                  aria-label={`Explore ${project.title}`}
-                  aria-description="Drag to move the meteor along its orbit and rotate it. Use arrow keys here to turn and move it. Press Enter to open the project."
+                  aria-label={`View ${project.title}`}
+                  aria-description="Drag to swing this meteor around its path and spin it. Arrow keys turn and shift it. Enter opens the venture."
                   onKeyDown={(event) => {
                     const step = LABEL_KEYS[event.key];
                     if (!step) return;
@@ -882,7 +882,7 @@ export function ExperienceShell({ children, contactEmail }) {
                     {project.title}
                     <small>
                       {project.category}
-                      {project.status === "In development" ? " · In progress" : ""}
+                      {project.status === "In development" ? " · In the works" : ""}
                     </small>
                   </span>
                   <span className="label-arrow" aria-hidden="true">
@@ -894,7 +894,7 @@ export function ExperienceShell({ children, contactEmail }) {
 
             <button
               className="scene-keyboard-target orbit-keyboard-target"
-              aria-label="Turn the whole orbit. Use arrow keys."
+              aria-label="Spin every meteor at once with the arrow keys."
               onKeyDown={(event) => {
                 if (!event.key.startsWith("Arrow")) return;
                 event.preventDefault();
@@ -907,14 +907,14 @@ export function ExperienceShell({ children, contactEmail }) {
               }}
               hidden={staticView || !ready || inFinale}
             >
-              Turn orbit
+              Spin orbit
             </button>
             <button
               className="scene-keyboard-target finale-meteor-target"
               ref={(element) => {
                 runtime.finaleMeteorButton = element;
               }}
-              aria-label={`Open ${LAST_PROJECT.title}. Use arrow keys to spin the arriving meteor.`}
+              aria-label={`Open ${LAST_PROJECT.title}. Arrow keys spin the incoming meteor.`}
               onKeyDown={(event) => {
                 if (!event.key.startsWith("Arrow")) return;
                 event.preventDefault();
@@ -931,7 +931,7 @@ export function ExperienceShell({ children, contactEmail }) {
               ref={(element) => {
                 runtime.earthButton = element;
               }}
-              aria-label="Explore Earth. Drag or use arrow keys to rotate; press Enter for a light pulse."
+              aria-label="Spin the globe by dragging or with the arrow keys. Enter sends out a pulse of light."
               onKeyDown={(event) => {
                 if (!event.key.startsWith("Arrow")) return;
                 event.preventDefault();
@@ -948,7 +948,7 @@ export function ExperienceShell({ children, contactEmail }) {
               }}
               hidden={!inFinale || staticView}
             >
-              Explore Earth
+              Spin Earth
             </button>
 
             <div
@@ -957,14 +957,14 @@ export function ExperienceShell({ children, contactEmail }) {
                 runtime.current = element;
               }}
             >
-              <p className="eyebrow">SELECTED WORK / {pad(chapter + 1)}</p>
+              <p className="eyebrow">VENTURE / {pad(chapter + 1)}</p>
               <a href={`/work/${chapterProject.id}/`} data-project={chapterProject.id}>
                 {chapterProject.title}
                 <Icon />
               </a>
               <p>
                 {chapterProject.category}
-                {chapterProject.status === "In development" ? " · In progress" : ""}
+                {chapterProject.status === "In development" ? " · In the works" : ""}
               </p>
             </div>
 
@@ -974,17 +974,17 @@ export function ExperienceShell({ children, contactEmail }) {
                 runtime.finale = element;
               }}
             >
-              <p className="eyebrow">FROM ONE IDEA, NEW POSSIBILITIES</p>
+              <p className="eyebrow">ONE STUDIO, MANY LAUNCHES</p>
               <h2>
-                A world of
+                Sparks land.
                 <br />
-                connection.
+                Companies grow.
               </h2>
-              <p className="finale-caption">Ideas travel further together.</p>
+              <p className="finale-caption">Every venture finds its own ground.</p>
               <a className="finale-continue inline-icon-link" href="#projects">
-                Continue to projects <Icon name="swipe" />
+                On to the ventures <Icon name="swipe" />
               </a>
-              <p className="earth-credit">Earth imagery · NASA / GSFC</p>
+              <p className="earth-credit">Earth imagery courtesy of NASA / GSFC</p>
             </div>
 
             <div className="stage-bottom">
@@ -992,20 +992,20 @@ export function ExperienceShell({ children, contactEmail }) {
                 <Icon name={exploring ? "rotate" : "swipe"} />
                 <span>
                   {staticView ? (
-                    "Explore the project list below"
+                    "Every venture is listed just below"
                   ) : (
                     <>
                       <span className="pointer-hint">
                         {inFinale
-                          ? "Drag Earth to rotate · Scroll to continue"
-                          : "Scroll to explore · Drag to rotate · Click to open"}
+                          ? "Drag to spin Earth · Keep scrolling"
+                          : "Scroll to fly · Drag to spin · Click a meteor"}
                       </span>
                       <span className="touch-hint">
                         {exploring
-                          ? "Drag to move & rotate · Done to scroll"
+                          ? "Drag to spin · Tap Done to scroll on"
                           : inFinale
-                            ? "Swipe to continue · Rotate to explore Earth"
-                            : "Swipe to browse · Tap a meteor"}
+                            ? "Swipe on · Use Spin to turn Earth"
+                            : "Swipe to fly · Tap any meteor"}
                       </span>
                     </>
                   )}
@@ -1032,7 +1032,7 @@ export function ExperienceShell({ children, contactEmail }) {
 
               <span className="chapter-count">
                 {inFinale ? (
-                  "EARTH / HOME"
+                  "LANDED / EARTH"
                 ) : (
                   <>
                     <span>{pad(chapter + 1)}</span> / {pad(projects.length)}
@@ -1043,7 +1043,7 @@ export function ExperienceShell({ children, contactEmail }) {
 
             <span className="sr-only" role="status">
               {announcement}
-              {failed ? "Interactive view unavailable. All projects remain available below." : ""}
+              {failed ? "The 3D view couldn’t load. Every venture is listed below." : ""}
             </span>
           </div>
         </section>

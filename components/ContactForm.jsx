@@ -20,12 +20,12 @@ const EMAIL_PATTERN =
   /^[^\s@<>(),;:\\"\[\]]+@(?:[a-z\d](?:[a-z\d-]*[a-z\d])?\.)+[a-z\d](?:[a-z\d-]*[a-z\d])?$/i;
 
 const INTERRUPTED =
-  "The connection was interrupted. Your message is still here—please try again or email us directly.";
+  "The connection dropped. Your note is still in the form—resend it, or write to us by email.";
 const REQUEST_TIMEOUT = 20000;
 
 const TEXT_FIELDS = [
   // [name, label, placeholder, type, autoComplete]
-  ["name", "Name", "Your name", "text", "name"],
+  ["name", "Name", "Full name", "text", "name"],
   ["email", "Email", "you@company.com", "email", "email"],
   ["company", "Company", "Optional", "text", "organization"],
   ["website", "Website", "Optional", "text", "url"],
@@ -46,20 +46,20 @@ function validate(input) {
   for (const field of Object.keys(LIMITS)) {
     const raw = source[field];
     if (raw !== undefined && typeof raw !== "string") {
-      errors[field] = "Please enter plain text.";
+      errors[field] = "Text only, please.";
       continue;
     }
     values[field] = typeof raw === "string" ? raw.trim() : "";
     if (values[field].length > LIMITS[field]) {
-      errors[field] = `Please use ${LIMITS[field]} characters or fewer.`;
+      errors[field] = `Keep it to ${LIMITS[field]} characters at most.`;
     } else if (field !== "message" && CONTROL_CHARACTERS.test(values[field])) {
-      errors[field] = "Please enter a single line of text.";
+      errors[field] = "Keep this to one line.";
     }
   }
 
-  if (!values.name) errors.name = "Please enter your name.";
-  if (!isValidEmail(values.email)) errors.email = "Please enter a valid email address.";
-  if (!values.message) errors.message = "Tell us a little about your idea.";
+  if (!values.name) errors.name = "We need a name to reply to.";
+  if (!isValidEmail(values.email)) errors.email = "That email doesn’t look right.";
+  if (!values.message) errors.message = "Give us a line or two about the idea.";
 
   if (values.website && !errors.website) {
     try {
@@ -75,7 +75,7 @@ function validate(input) {
       }
       values.website = url.href;
     } catch {
-      errors.website = "Please enter a website such as example.com.";
+      errors.website = "Try a web address like example.com.";
     }
   }
 
@@ -155,8 +155,8 @@ export default function ContactForm({ email, preview, open, close }) {
         if (body.errors) setErrors(body.errors);
         throw Error(
           response.status === 429
-            ? "You’ve sent several requests. Please wait a few minutes or email us directly."
-            : body.error || "We couldn’t send your message. Please try again or email us directly.",
+            ? "Too many sends in a row. Wait a bit, or write to us by email."
+            : body.error || "Your note didn’t go through. Send it again, or write to us by email.",
         );
       }
 
@@ -180,11 +180,11 @@ export default function ContactForm({ email, preview, open, close }) {
         <span className="contact-success-mark">
           <Icon name="check" />
         </span>
-        <h3>{preview ? "Test message accepted." : "Thank you for reaching out."}</h3>
+        <h3>{preview ? "Test note received." : "Got it. Thanks."}</h3>
         <p>
           {preview
-            ? `This preview was delivered to a test inbox. The production form will reach the ${site.name} team.`
-            : "Your message has been sent. We’ll read it personally and reply to the email you provided."}
+            ? `Preview only: this landed in a sandbox inbox. On the live site it goes straight to the ${site.name} team.`
+            : "Your note is with the team now. A real person will read it and answer at the address you gave us."}
         </p>
         <button
           type="button"
@@ -194,7 +194,7 @@ export default function ContactForm({ email, preview, open, close }) {
             close();
           }}
         >
-          Back to exploring <Icon name="arrow-right" />
+          Keep browsing <Icon name="arrow-right" />
         </button>
       </div>
     );
@@ -204,7 +204,7 @@ export default function ContactForm({ email, preview, open, close }) {
 
   return (
     <form ref={formRef} className="contact-form" noValidate onSubmit={submit} aria-busy={sending}>
-      {preview && <p className="contact-preview-note">Preview mode · Messages go to a test inbox.</p>}
+      {preview && <p className="contact-preview-note">Preview · Notes land in a sandbox inbox.</p>}
       <fieldset disabled={sending} className="contact-fields">
         {TEXT_FIELDS.map(([field, label, placeholder, type, autoComplete]) => {
           const optional = field === "company" || field === "website";
@@ -240,14 +240,14 @@ export default function ContactForm({ email, preview, open, close }) {
           );
         })}
         <div className="contact-field contact-message">
-          <label htmlFor="contact-message">What are you building?</label>
+          <label htmlFor="contact-message">What’s the idea?</label>
           <textarea
             id="contact-message"
             name="message"
             value={values.message}
             onChange={(event) => update("message", event.target.value)}
             rows={5}
-            placeholder="A short paragraph is perfect."
+            placeholder="The problem, the idea, where it stands. A few lines will do."
             required
             maxLength={LIMITS.message}
             aria-invalid={!!errors.message}
@@ -261,7 +261,7 @@ export default function ContactForm({ email, preview, open, close }) {
         </div>
         {/* Honeypot: people never see or fill this; bots often do. */}
         <div className="contact-honeypot" aria-hidden="true">
-          <label htmlFor="contact-fax">Leave this field empty</label>
+          <label htmlFor="contact-fax">Do not fill this in</label>
           <input id="contact-fax" name="fax" type="text" tabIndex={-1} autoComplete="off" />
         </div>
       </fieldset>
@@ -274,9 +274,9 @@ export default function ContactForm({ email, preview, open, close }) {
 
       <div className="contact-form-bottom">
         <p>
-          We read every note personally.
+          Every note lands with a real person.
           <br />
-          <span>Your details are used to respond to this enquiry.</span>
+          <span>Your details go toward a reply, nothing else.</span>
         </p>
         <button type="submit" className="button contact-submit" disabled={sending}>
           {sending ? (
@@ -285,20 +285,20 @@ export default function ContactForm({ email, preview, open, close }) {
             </>
           ) : (
             <>
-              Send message <Icon name="arrow-right" />
+              Send it <Icon name="arrow-right" />
             </>
           )}
         </button>
       </div>
 
       <p className="contact-direct">
-        Prefer email?{" "}
+        Rather use email?{" "}
         <a href={`mailto:${email}`}>
           {email} <Icon />
         </a>
       </p>
       <span className="sr-only" role="status">
-        {sending ? "Sending your message." : ""}
+        {sending ? "Sending your note now." : ""}
       </span>
     </form>
   );

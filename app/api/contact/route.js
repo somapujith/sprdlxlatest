@@ -28,8 +28,8 @@ const RATE_WINDOW_MS = 10 * 60 * 1000;
 const IDEMPOTENCY_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_TRACKED_KEYS = 5000;
 
-const NOT_CONFIGURED = "The contact form isn't configured yet. Please email us directly.";
-const SEND_FAILED = "We couldn’t send your message. Please try again or email us directly.";
+const NOT_CONFIGURED = "The form isn’t switched on yet. Email us instead.";
+const SEND_FAILED = "Your note didn’t go through. Send it again, or write to us by email.";
 
 // In-memory state. It is per server instance and resets on restart, which is
 // enough to slow down casual abuse; put a shared store in front for more.
@@ -54,20 +54,20 @@ function validate(input) {
   for (const field of Object.keys(LIMITS)) {
     const raw = source[field];
     if (raw !== undefined && typeof raw !== "string") {
-      errors[field] = "Please enter plain text.";
+      errors[field] = "Text only, please.";
       continue;
     }
     values[field] = typeof raw === "string" ? raw.trim() : "";
     if (values[field].length > LIMITS[field]) {
-      errors[field] = `Please use ${LIMITS[field]} characters or fewer.`;
+      errors[field] = `Keep it to ${LIMITS[field]} characters at most.`;
     } else if (field !== "message" && CONTROL_CHARACTERS.test(values[field])) {
-      errors[field] = "Please enter a single line of text.";
+      errors[field] = "Keep this to one line.";
     }
   }
 
-  if (!values.name) errors.name = "Please enter your name.";
-  if (!isValidEmail(values.email)) errors.email = "Please enter a valid email address.";
-  if (!values.message) errors.message = "Tell us a little about your idea.";
+  if (!values.name) errors.name = "We need a name to reply to.";
+  if (!isValidEmail(values.email)) errors.email = "That email doesn’t look right.";
+  if (!values.message) errors.message = "Give us a line or two about the idea.";
 
   if (values.website && !errors.website) {
     try {
@@ -83,7 +83,7 @@ function validate(input) {
       }
       values.website = url.href;
     } catch {
-      errors.website = "Please enter a website such as example.com.";
+      errors.website = "Try a web address like example.com.";
     }
   }
 
@@ -185,21 +185,21 @@ async function deliver(values, source, submissionId) {
 export async function POST(request) {
   const length = Number(request.headers.get("content-length") ?? 0);
   if (length > MAX_BODY_BYTES) {
-    return json({ success: false, error: "Your message is too long. Please shorten it and try again." }, 413);
+    return json({ success: false, error: "That’s too long for the form. Trim it and send again." }, 413);
   }
 
   let body;
   try {
     const raw = await request.text();
     if (raw.length > MAX_BODY_BYTES) {
-      return json({ success: false, error: "Your message is too long. Please shorten it and try again." }, 413);
+      return json({ success: false, error: "That’s too long for the form. Trim it and send again." }, 413);
     }
     body = JSON.parse(raw);
   } catch {
-    return json({ success: false, error: "We couldn’t read your message. Please try again." }, 400);
+    return json({ success: false, error: "Your note arrived garbled. Please send it again." }, 400);
   }
   if (!body || typeof body !== "object" || Array.isArray(body)) {
-    return json({ success: false, error: "We couldn’t read your message. Please try again." }, 400);
+    return json({ success: false, error: "Your note arrived garbled. Please send it again." }, 400);
   }
 
   // Honeypot: people never see the `fax` field. Bots get a quiet success.
@@ -209,7 +209,7 @@ export async function POST(request) {
 
   const { values, errors } = validate(body);
   if (Object.keys(errors).length) {
-    return json({ success: false, error: "Please check the highlighted fields.", errors }, 400);
+    return json({ success: false, error: "A few fields need a fix.", errors }, 400);
   }
 
   const submissionId =
@@ -228,7 +228,7 @@ export async function POST(request) {
 
   if (!allow(clientIp(request), now)) {
     return json(
-      { success: false, error: "You’ve sent several requests. Please wait a few minutes or email us directly." },
+      { success: false, error: "Too many sends in a row. Wait a bit, or write to us by email." },
       429,
     );
   }
