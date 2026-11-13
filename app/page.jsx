@@ -1,4 +1,3 @@
-import { ConnectedEarthSection } from "@/components/ConnectedEarthSection";
 import { ExperienceShell } from "@/components/ExperienceShell";
 import { Icon } from "@/components/Icon";
 import { ProjectMark, ProjectStatus } from "@/components/ProjectBits";
@@ -98,8 +97,6 @@ export default function HomePage() {
       />
       <ExperienceShell contactEmail={site.contactEmail}>
         <div className="editorial-content">
-          <ConnectedEarthSection />
-
           <section id="projects" className="work-index section-space" aria-labelledby="work-heading">
             <div className="section-topline">
               <span className="eyebrow">THE PORTFOLIO</span>
